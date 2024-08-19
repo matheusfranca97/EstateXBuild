@@ -38,15 +38,18 @@ In my Unity C# script, I can now call the `SendDataToParent` function defined in
 
 ```csharp
 [System.Serializable]
-public class FinalScoreData
+public class GameDataDTO
 {
-    public int score;
-    public string message;
+    public int points;
+    public int playCoins;
+    public int timeCoins;
+    public int boostCoins;
 }
 
 public class BackendCommunicationManager : MonoBehaviour
 {
     public static BackendCommunicationManager Instance { get; private set; }
+    public GameDataSO CurrentGameData;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
@@ -66,28 +69,36 @@ public class BackendCommunicationManager : MonoBehaviour
         }
     }
 
-    public void SendFinalScoreToParent(int finalPlayerScore)
+    public void SendFinalScoreToParent()
     {
-        FinalScoreData data = new FinalScoreData
+        GameDataDTO data = new GameDataDTO
         {
-            score = finalPlayerScore,
-            message = "Hello, I'm Matheus sending you a message from EstateX game o/"
+            points = CurrentGameData.points,
+            playCoins = CurrentGameData.playCoins,
+            timeCoins = CurrentGameData.timeCoins,
+            boostCoins = CurrentGameData.boostCoins
         };
 
         string jsonData = JsonUtility.ToJson(data);
         Debug.Log("JSON data being sent: " + jsonData);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-        SendDataToParent(jsonData);
+    SendDataToParent(jsonData);
 #else
         Debug.Log("SendDataToParent is only available in WebGL builds.");
 #endif
     }
 
-    // Function exposed to JavaScript to receive data
+
     public void ReceivePlayerData(string json)
     {
-        Debug.Log("Data received from JavaScript: " + json);
+        ResetGameData();
+        Debug.Log("This is the data from NextJs: " + json);
+        GameDataDTO receivedData = JsonUtility.FromJson<GameDataDTO>(json);
+        CurrentGameData.playCoins = receivedData.playCoins;
+        CurrentGameData.timeCoins = receivedData.timeCoins;
+        CurrentGameData.boostCoins = receivedData.boostCoins;
+        CurrentGameData.points = receivedData.points;
     }
 }
 ```
