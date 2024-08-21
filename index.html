@@ -7,7 +7,7 @@
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <canvas id="unity-canvas" width=450 height=900 tabindex="-1" style="width: 450px; height: 900px; background: #231F20"></canvas>
-    <script src="Build/GzipBuild.loader.js"></script>
+    <script src="Build/TestBuild.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -25,9 +25,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/GzipBuild.data",
-        frameworkUrl: "Build/GzipBuild.framework.js",
-        codeUrl: "Build/GzipBuild.wasm",
+        dataUrl: "Build/TestBuild.data",
+        frameworkUrl: "Build/TestBuild.framework.js",
+        codeUrl: "Build/TestBuild.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "EvolutionX",
@@ -35,6 +35,7 @@
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
       });
+
     </script>
   </body>
 </html>
